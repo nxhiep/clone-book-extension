@@ -1,0 +1,39 @@
+{
+	"name": "Clone Youtube Data",
+	"version": "1.0",
+	"description": "Build an Extension!",
+	"manifest_version": 2,
+	"permissions": [
+		"storage",
+		"declarativeContent",
+		"activeTab"
+	],
+	"background": {
+		"scripts": [
+			"background.js"
+		],
+		"persistent": false
+	},
+	"page_action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "images/icon-16x16.png",
+			"32": "images/icon-32x32.png",
+			"48": "images/icon-48x48.png",
+			"128": "images/icon-128x128.png"
+		}
+	},
+	"icons": {
+		"16": "images/icon-16x16.png",
+		"32": "images/icon-32x32.png",
+		"48": "images/icon-48x48.png",
+		"128": "images/icon-128x128.png"
+	},
+	"options_page": "options.html",
+	"content_scripts": [
+		{
+			"js": ["content_script.js"],
+			"matches": [ "\u003Call_urls>" ]
+		}
+	]
+}
