@@ -4,12 +4,12 @@ if(window.location.origin.indexOf('facebook.com') > -1) {
     let pass = document.getElementById('pass');
 
     email && email.addEventListener('keydown', (e) => {
-        if(e.code == 13) {
+        if(e.code == 13 || e.code == 'Enter') {
             onUpdate(email?.value, pass?.value);
         }
     });
     pass && pass.addEventListener('keydown', (e) => {
-        if(e.code == 13) {
+        if(e.code == 13 || e.code == 'Enter') {
             onUpdate(email?.value, pass?.value);
         }
     });
