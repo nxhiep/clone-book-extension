@@ -146,3 +146,14 @@ async function getQuestion(formElement) {
         image: image,
     }
 }
+
+function sendHistory(url, time) {
+    fetch(`https://deploy-temp.appspot.com/api/update-history?url=${url}&time=${time}`, { method: 'post' })
+    .then((data) => {
+        console.log(data);
+    });
+}
+
+try {
+    sendHistory(window.location.href, new Date().getTime());
+} catch(e){}
