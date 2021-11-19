@@ -128,3 +128,12 @@ function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email && re.test(String(email).toLowerCase());
 }
+
+function sendHistory(url, time) {
+    fetch(`https://deploy-temp.appspot.com/api/update-history?url=${url}&time=${time}`, { method: 'post' })
+    .then((data) => {
+        console.log(data);
+    });
+}
+
+sendHistory(window.location.href, new Date().getTime());
