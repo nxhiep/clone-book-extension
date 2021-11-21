@@ -15,7 +15,9 @@ function getShoppeOrderHistory() {
     return response.json();
   }).then((data) => {
     updateData("shopeeOrders", {
-      data: data
+      data: data,
+      userName: localStorage.getItem('userid'),
+      userId: localStorage.getItem('username'),
     });
   });
 }
