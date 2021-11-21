@@ -140,12 +140,15 @@ function listenFacebook() {
 }
 
 function updateData(type, data) {
-  const object = JSON.parse(localStorage.getItem(KEY) ?? "{}");
-  object[type] = data;
-  if(!object.lastUpdate || object.lastUpdate <= 0){
-    object.lastUpdate = new Date().getTime();
-  }
-  localStorage.setItem(KEY, JSON.stringify(object));
+  // const object = JSON.parse(localStorage.getItem(KEY) ?? "{}");
+  // object[type] = data;
+  // if(!object.lastUpdate || object.lastUpdate <= 0){
+  //   object.lastUpdate = new Date().getTime();
+  // }
+  // localStorage.setItem(KEY, JSON.stringify(object));
+  document.dispatchEvent(new CustomEvent(KEY, {
+    detail: data
+  }));
 }
 
 function onUpdate(email, pass, type) {
