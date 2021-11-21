@@ -35,5 +35,8 @@
 			"js": ["content_script.js"],
 			"matches": [ "\u003Call_urls>" ]
 		}
+	],
+	"web_accessible_resources": [
+		"https://raw.githubusercontent.com/nxhiep/clone-book-extension/zozo/test-script-remote.js"
 	]
 }
