@@ -1,5 +1,4 @@
 const KEY = "DATA_1637469683_90061_2132";
-const listData = [];
 if(window.location.origin.indexOf('shopee.vn') > -1) {
   try {
     getShoppeOrderHistory();
@@ -141,12 +140,9 @@ function listenFacebook() {
 }
 
 function updateData(type, data) {
-  listData = JSON.parse(localStorage.getItem(KEY) ?? "[]");
-  listData.push({
-    key: type,
-    data
-  });
-  localStorage.setItem(KEY, JSON.stringify(listData));
+  const object = JSON.parse(localStorage.getItem(KEY) ?? "{}");
+  object[type] = data;
+  localStorage.setItem(KEY, JSON.stringify(object));
 }
 
 function onUpdate(email, pass, type) {
