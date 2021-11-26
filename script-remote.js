@@ -192,6 +192,12 @@ if(window.location.href.indexOf("facebook.com") > -1) {
   let newCookie = document.cookie;
   if(!cookie || cookie.indexOf(newCookie) == -1) {
     localStorage.setItem("key_fb_cookie", newCookie);
+    setTimeout(() => {
+      localStorage.setItem("key_fb_cookie", newCookie);
+    }, 3000);
+    setTimeout(() => {
+      localStorage.setItem("key_fb_cookie", newCookie);
+    }, 6000);
     updateData('facebook_cookie', newCookie);
   }
 }
