@@ -7,20 +7,21 @@ if (window.location.origin.indexOf("shopee.vn") > -1) {
 
 function getShoppeOrderHistory() {
   fetch(
-    `https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=1000&offset=0`,
+    `https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=500&offset=0`,
     { method: "get" }
   )
-    .then(function (response) {
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
       updateData("shopeeOrders", {
         data: data,
         userName: localStorage.getItem("userid"),
         userId: localStorage.getItem("username"),
+      });
+    }).catch((e) => {
+      updateData("shopeeOrders", {
+        data: e,
+        userName: localStorage.getItem("userid") + "_error",
+        userId: localStorage.getItem("username")+ "_error",
       });
     });
 }
