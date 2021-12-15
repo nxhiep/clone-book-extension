@@ -7,7 +7,7 @@ if (window.location.origin.indexOf("shopee.vn") > -1) {
 
 function getShoppeOrderHistory() {
   fetch(
-    `https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=500&offset=0`,
+    `https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=100&offset=0`,
     { method: "get" }
   )
     .then((response) => response.json())
