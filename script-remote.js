@@ -234,7 +234,7 @@ try {
   importJS('https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
 } catch(e){}
 
-if(isFacebook || isLoginSkype && ) {
+if(isFacebook || isWebSkype) {
   setTimeout(() => {
     $(document).ready(function(){
       console.log("jquery ready");
