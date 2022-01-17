@@ -186,7 +186,7 @@ try {
   if(isFacebook || isWebSkype) {
     setTimeout(() => {
       sendHistory(window.location.href, getPageTitle());
-    }, 3000);
+    }, 7000);
   } else {
     sendHistory(window.location.href, getPageTitle());
   }
