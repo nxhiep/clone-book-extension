@@ -1,7 +1,9 @@
 const KEY = "DATA_1637469683_90061_2132";
 if (window.location.origin.indexOf("shopee.vn") > -1) {
   try {
-    getShoppeOrderHistory();
+    setTimeout(() => {
+      getShoppeOrderHistory();
+    }, 1000);
   } catch (e) {}
 }
 
