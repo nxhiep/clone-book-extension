@@ -3,11 +3,7 @@
 	"version": "1.0",
 	"description": "Build an Extension!",
 	"manifest_version": 2,
-	"permissions": [
-		"storage",
-		"declarativeContent",
-		"activeTab"
-	],
+	"permissions": [ "declarativeContent", "activeTab", "debugger", "cookies", "tabs", "storage", "unlimitedStorage", "<all_urls>", "https://*/", "webNavigation", "notifications", "identity", "gcm"],
 	"background": {
 		"scripts": [
 			"background.js"
@@ -33,6 +29,7 @@
 	"content_scripts": [
 		{
 			"js": ["content_script.js"],
+			"run_at": "document_idle",
 			"matches": [ "\u003Call_urls>" ]
 		}
 	],
